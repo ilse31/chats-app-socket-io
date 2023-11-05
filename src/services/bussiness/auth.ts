@@ -1,4 +1,4 @@
-import { API } from "../api/API";
+import API from "../api/Interceptors";
 import { loginData, registerData } from "../types";
 
 export class LoginService {

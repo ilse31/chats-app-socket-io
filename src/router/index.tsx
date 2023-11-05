@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Auth from "../pages/auth";
+import Chats from "../pages/chats";
 
 const Routed = () => {
   return (
@@ -15,7 +16,9 @@ const Routed = () => {
           <Route path='modals' element={<ModalPages />} />
         </Route>
       </Route> */}
-      <Route path='/auth' element={<Auth />} />
+      <Route path='/auth/login' element={<Auth />} />
+      <Route path='/auth/register' element={<Auth />} />
+      <Route path='/profile' element={<Chats />} />
     </Routes>
   );
 };

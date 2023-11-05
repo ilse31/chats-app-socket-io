@@ -1,4 +1,6 @@
 import { Formik } from "formik";
+import Input from "../Inputs";
+import Button from "../buttons";
 
 type FormValues = {
   [key: string]: string;
@@ -10,20 +12,18 @@ type Props = {
   handleSubmit: (values: unknown) => void;
 };
 
-const FormData = ({ initialValues, handleSubmit, validationSchema }: Props) => {
+const FormData = ({ initialValues, validationSchema, handleSubmit }: Props) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ values, handleChange, handleSubmit }) => (
+      {({ values, handleChange, handleSubmit, errors }) => (
         <form className='gap-3 flex-col flex w-full' onSubmit={handleSubmit}>
           {Object.keys(initialValues).map((key) => (
             <div key={key}>
-              <label htmlFor={key}>{key}:</label>
-              <input
-                value={values[key]}
+              <Input
                 type={
                   key === "email"
                     ? "email"
@@ -31,12 +31,19 @@ const FormData = ({ initialValues, handleSubmit, validationSchema }: Props) => {
                     ? "password"
                     : "text"
                 }
-                onChange={handleChange}
-                id={key}
                 name={key}
+                onChange={handleChange}
+                label={key}
+                value={values[key]}
+                id={key}
+                errorMessage={errors[key]}
               />
             </div>
           ))}
+
+          <Button type='submit' variant='sky'>
+            Submit
+          </Button>
         </form>
       )}
     </Formik>

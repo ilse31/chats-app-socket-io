@@ -8,3 +8,7 @@ export type loginData = {
   email: string;
   password: string;
 };
+
+export type getMeData = {
+  userId: string;
+};
