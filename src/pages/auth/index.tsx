@@ -9,14 +9,14 @@ import { setLocalStorage } from "../../helpers/localstorage";
 
 const Auth = () => {
   const navigate = useNavigate();
-  let loginService = new LoginService();
+  const loginService = new LoginService();
   const [isLogin, setIsLogin] = React.useState<boolean>(true);
 
   const inititalValues = isLogin ? loginValues : registerValues;
 
   const params = useLocation();
 
-  const handleSubmit = async (values: unknown) => {
+  const handleSubmit = async (values: any) => {
     if (isLogin) {
       await loginService
         .LoginUser(values)
