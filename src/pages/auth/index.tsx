@@ -18,32 +18,30 @@ const Auth = () => {
   const params = useLocation();
 
   const handleSubmit = async (values: any) => {
-    if (isLogin) {
-      await loginService
-        .LoginUser(values)
-        .then((Resp) => {
-          socket.auth = {
-            email: values.email,
-          };
-          socket.connect();
-          setLocalStorage("token", Resp.data.data.token);
-          setLocalStorage("user", Resp.data.data.user);
-          navigate("/profile");
-        })
-        .catch((err) => console.log(err));
-    } else {
-      await loginService
-        .RegisterUser(values)
-        .then((Resp) => {
-          socket.auth = {
-            email: values.email,
-          };
-          socket.connect();
-          setLocalStorage("token", Resp.data.data.token);
-          setLocalStorage("user", Resp.data.data.user);
-          navigate("/profile");
-        })
-        .catch((err) => console.log(err));
+    try {
+      let response;
+      if (isLogin) {
+        response = await loginService.LoginUser(values);
+      } else {
+        response = await loginService.RegisterUser(values);
+      }
+
+      socket.auth = {
+        email: values.email,
+      };
+      socket.connect();
+
+      const token = response.data.data.token;
+      const user = response.data.data.user;
+      setLocalStorage("token", token);
+      setLocalStorage("user", user);
+
+      // Assuming navigate() is an asynchronous function
+      navigate("/profile");
+
+      // Now, after navigation, you might want to wait a bit before logging the email
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -53,12 +51,12 @@ const Auth = () => {
     } else setIsLogin(true);
   }, [params]);
 
-  React.useEffect(() => {
-    const token = getLocalStorage("token");
-    if (!token) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // React.useEffect(() => {
+  //   const token = getLocalStorage("token");
+  //   if (!token) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
 
   return (
     <>

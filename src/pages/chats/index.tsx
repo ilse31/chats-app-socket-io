@@ -3,13 +3,13 @@ import { ProfileService } from "../../services/bussiness/profile";
 import Button from "../../components/buttons";
 import { getLocalStorage } from "../../helpers/localstorage";
 import socket from "../../services/socket";
+import ChatWindow from "../../components/app/ChatWindow";
 
 const Chats: React.FC = () => {
   const profileService = new ProfileService();
   const [connectionUser, setConnectionUser] = React.useState<any>([]);
-  const [userData, setUserData] = React.useState();
 
-  const [selectedUser, setSelectedUser] = React.useState("");
+  const [selectedUser, setSelectedUser] = React.useState({});
 
   const handleClick = async () => {
     const user = getLocalStorage("user");
@@ -17,7 +17,7 @@ const Chats: React.FC = () => {
       .getMe({
         userId: user.id,
       })
-      .then((resp) => setUserData(resp.data.data))
+      .then((resp) => console.log("resp", resp.data.data))
       .catch((err) => console.log(err));
   };
 
@@ -49,18 +49,26 @@ const Chats: React.FC = () => {
     <div className='flex flex-col'>
       <Button onClick={handleClick}>Get Profile</Button>
       {connectionUser.map((user: any) => {
+        console.log("user", user);
         return (
           <div key={user.key} className='p-5 text-black '>
             <span
               className='bg-blue-600 rounded-sm max-w-sm cursor-pointer p-5'
-              onClick={() => !user.self && setSelectedUser(user.email)}
+              onClick={() => !user.self && setSelectedUser(user)}
             >
               {user.email}
             </span>
           </div>
         );
       })}
-      {selectedUser && <div>{selectedUser}</div>}
+      {selectedUser && (
+        <div>
+          <ChatWindow
+            connectedUsers={connectionUser}
+            selectedUser={selectedUser}
+          />
+        </div>
+      )}
     </div>
   );
 };
