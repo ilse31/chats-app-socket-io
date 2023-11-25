@@ -12,7 +12,7 @@ const API: AxiosInstance = axios.create({
 
 API.interceptors.request.use(
   async (req: InternalAxiosRequestConfig) => {
-    const token = getLocalStorage("token");
+    const token = getLocalStorage("token") || {};
     const { expired_at, refreshToken } = token;
 
     let accessToken = token.accessToken;

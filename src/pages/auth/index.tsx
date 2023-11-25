@@ -6,6 +6,7 @@ import Button from "../../components/buttons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginService } from "../../services/bussiness/auth";
 import { setLocalStorage } from "../../helpers/localstorage";
+import socket from "../../services/socket";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -21,7 +22,11 @@ const Auth = () => {
       await loginService
         .LoginUser(values)
         .then((Resp) => {
-          console.log(Resp);
+          console.log("valuies", values.email);
+          socket.auth = {
+            email: values.email,
+          };
+          socket.connect();
           setLocalStorage("token", Resp.data.data.token);
           setLocalStorage("user", Resp.data.data.user);
           navigate("/profile");
@@ -31,7 +36,10 @@ const Auth = () => {
       await loginService
         .RegisterUser(values)
         .then((Resp) => {
-          console.log(Resp);
+          socket.auth = {
+            email: values.email,
+          };
+          socket.connect();
           setLocalStorage("token", Resp.data.data.token);
           setLocalStorage("user", Resp.data.data.user);
           navigate("/profile");
