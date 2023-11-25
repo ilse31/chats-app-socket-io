@@ -36,7 +36,7 @@
     "autoprefixer": "^10.4.16",
     "bun-types": "^1.0.7",
     "eslint": "^8.45.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-hooks": "^5.0.0-canary-ce2bc58a9-20231102",
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",

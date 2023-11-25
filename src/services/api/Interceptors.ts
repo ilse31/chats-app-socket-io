@@ -48,6 +48,7 @@ const getRefreshToken = async (refreshToken: string) => {
     return res.data.data.accessToken;
   } catch (error) {
     console.log(error);
+    localStorage.clear();
     window.location.href = "/";
   }
 };

@@ -5,7 +5,7 @@ import { LoginSchema, RegisterSchema } from "../../constant/validate/Auth";
 import Button from "../../components/buttons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginService } from "../../services/bussiness/auth";
-import { setLocalStorage } from "../../helpers/localstorage";
+import { getLocalStorage, setLocalStorage } from "../../helpers/localstorage";
 import socket from "../../services/socket";
 
 const Auth = () => {
@@ -22,7 +22,6 @@ const Auth = () => {
       await loginService
         .LoginUser(values)
         .then((Resp) => {
-          console.log("valuies", values.email);
           socket.auth = {
             email: values.email,
           };
@@ -53,6 +52,14 @@ const Auth = () => {
       setIsLogin(false);
     } else setIsLogin(true);
   }, [params]);
+
+  React.useEffect(() => {
+    const token = getLocalStorage("token");
+    if (!token) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className='container mx-auto flex flex-col gap-3'>
